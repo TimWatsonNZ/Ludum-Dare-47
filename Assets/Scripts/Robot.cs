@@ -68,6 +68,7 @@ public class Robot : MonoBehaviour
         
         GameController.instance.CheckBounds(this);
         direction = Vector3.zero;
+        print("something");
     }
 
     private void MoveDirection(Vector3 direction) {
