@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: [enemy, wall, resource, enemy, wall]
+  tags:
+  - enemy
+  - wall
+  - resource
+  - enemy
+  - wall
+  - resource
   layers:
   - Default
   - TransparentFX
