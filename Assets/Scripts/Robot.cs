@@ -14,18 +14,18 @@ public class Robot : MonoBehaviour
     protected static Vector3[] directions = new Vector3[] { north, east, south, west };
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         direction = RandomDirection();
     }
 
-    public Vector2 RandomDirection()
+    public Vector3 RandomDirection()
     {
         return directions[(int)(Random.value * (directions.Length - 0.1f))];
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
 
         speed = Mathf.Min(Vector2.Distance(transform.position, target), 1) * maxSpeed / GameController.instance.timeStep;

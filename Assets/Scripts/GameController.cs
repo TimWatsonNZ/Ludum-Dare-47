@@ -61,6 +61,10 @@ public class GameController : MonoBehaviour
         return robot;
     }
 
+    public Vector3 RandomPosition() {
+        return new Vector3((int)(gridSize.x * Random.value - gridSize.x / 2), (int)(gridSize.y * Random.value - gridSize.y / 2), 0);
+    }
+
     public void CheckBounds(Robot robot)
     {
         Vector2 pos = robot.transform.position;
@@ -103,7 +107,7 @@ public class GameController : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         if (time > timeStep)
         {
@@ -112,6 +116,11 @@ public class GameController : MonoBehaviour
             {
                 Robot robot = robots[i];
                 robot.RunProgram();
+            }
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                Enemy enemy = enemies[i];
+                enemy.RunProgram();
             }
         }
         time += Time.deltaTime;
