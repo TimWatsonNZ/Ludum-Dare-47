@@ -359,7 +359,7 @@ MonoBehaviour:
   walls: []
   enemies: []
   resources: []
-  timeStep: 0.2
+  timeStep: 1
   time: 0
   robotPrefab: {fileID: 56505184}
   floorPrefab: {fileID: 601209195663692930, guid: e758ddb2eed162644bb9d34bd4b1a360,
@@ -636,6 +636,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5424420491563434168, guid: 63b0033eba9a9484c98ae2146a8bdf08,
+        type: 3}
+      propertyPath: maxSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7880949137797998455, guid: 63b0033eba9a9484c98ae2146a8bdf08,
         type: 3}
