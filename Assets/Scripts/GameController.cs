@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour
 
     public void SpawnResource() {
         int tries = 0;
-        for (int i = 0; i < wallCount; i++)
+        for (int i = 0; i < resourceCount; i++)
         {
             Resource resource = Instantiate(resourcePrefab).GetComponent<Resource>();
             Vector3 pos = RandomPosition();
