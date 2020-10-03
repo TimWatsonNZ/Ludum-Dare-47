@@ -13,6 +13,7 @@ public class Robot : MonoBehaviour
     protected static Vector3 west = new Vector3(-1, 0, 0);
     protected static Vector3[] directions = new Vector3[] { north, east, south, west };
 
+
     // Start is called before the first frame update
     protected void Start()
     {

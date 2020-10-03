@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     public GameObject robotPrefab, floorPrefab, wallPrefab, resourcePrefab, enemyPrefab;
 
     public Vector2 gridSize = new Vector2(0, 0);
-    public int wallCount = 3;
+    public int wallCount = 3, resourceCount = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -53,9 +53,30 @@ public class GameController : MonoBehaviour
             wall.transform.position = RandomPosition();
         }
 
+        SpawnResource();
 
+    }
 
-
+    public void SpawnResource() {
+        int tries = 0;
+        for (int i = 0; i < wallCount; i++)
+        {
+            Resource resource = Instantiate(resourcePrefab).GetComponent<Resource>();
+            Vector3 pos = RandomPosition();
+            for (int j = 0; j < walls.Count; j++)
+            {
+                while (pos.Equals(walls[j]) || tries < 100)
+                {
+                    pos = RandomPosition();
+                    tries++;
+                }
+                if (tries >= 100)
+                {
+                    return;
+                }
+            }
+            resource.transform.position = pos;
+        }
     }
 
     public Robot SpawnRobot()
