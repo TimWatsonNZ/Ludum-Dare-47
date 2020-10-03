@@ -45,4 +45,13 @@ public class Robot : MonoBehaviour
         target = new Vector3(Mathf.Round(target.x), Mathf.Round(target.y), Mathf.Round(target.z));
 
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("enemy")) {
+            transform.position = Vector3.zero;
+            target = Vector3.zero;
+            print("death");
+        }
+    }
 }
