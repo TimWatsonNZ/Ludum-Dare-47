@@ -6,6 +6,7 @@ TagManager:
   tags:
   - enemy
   - wall
+  - resource
   layers:
   - Default
   - TransparentFX
