@@ -52,24 +52,16 @@ public class GameController : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < wallCount; i++)
-        {
+        for (int i = 0; i < wallCount; i++) {
             Wall wall = Instantiate(wallPrefab).GetComponent<Wall>();
             wall.transform.position = RandomPosition();
         }
 
         SpawnResource();
+
     }
 
-    public Robot SpawnRobot()
-    {
-        Robot robot = Instantiate(robotPrefab).GetComponent<Robot>();
-        robots.Add(robot);
-        return robot;
-    }
-
-    public void SpawnResource()
-    {
+    public void SpawnResource() {
         int tries = 0;
         for (int i = 0; i < wallCount; i++)
         {
@@ -91,8 +83,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public Vector3 RandomPosition()
+    public Robot SpawnRobot()
     {
+        Robot robot = Instantiate(robotPrefab).GetComponent<Robot>();
+        robots.Add(robot);
+        return robot;
+    }
+
+    public Vector3 RandomPosition() {
         Vector2 pos = Vector2.zero;
         while (pos.Equals(Vector2.zero))
         {
@@ -100,7 +98,6 @@ public class GameController : MonoBehaviour
         }
         return pos;
     }
-
 
     public void CheckBounds(Robot robot)
     {
@@ -181,7 +178,7 @@ public class GameController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         if (time > timeStep)
         {
@@ -195,7 +192,7 @@ public class GameController : MonoBehaviour
             for (int i = 0; i < enemies.Count; i++)
             {
                 Enemy enemy = enemies[i];
-                enemy.Move();
+                enemy.RunProgram();
             }
         }
         time += Time.deltaTime;

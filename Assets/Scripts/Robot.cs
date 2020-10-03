@@ -20,7 +20,7 @@ public class Robot : MonoBehaviour
     float timeStep = 0;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         Commander.AddCommand(this, Command.MoveEast, Predicate.Always, "");
         Commander.AddCommand(this, Command.MoveNorth, Predicate.XLessThan, "1.5");
@@ -50,7 +50,7 @@ public class Robot : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         if (timeStep < GameController.instance.timeStep) {
             timeStep += Time.deltaTime;
@@ -108,4 +108,23 @@ public class Robot : MonoBehaviour
             print("wall");
         }
     }
+
+    protected void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("enemy")) {
+            transform.position = Vector3.zero;
+            target = Vector3.zero;
+            print("death");
+        }
+        if (collision.gameObject.CompareTag("wall"))
+        {
+            speed = 0;
+            transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
+            direction = -direction;
+            target = transform.position + direction;
+            
+            print("wall");
+        }
+    }
+
 }
