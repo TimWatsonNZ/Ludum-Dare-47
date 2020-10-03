@@ -17,11 +17,15 @@ public class Robot : MonoBehaviour
     List<Instruction> instructions = new List<Instruction>();
 
     int currentLine = 0;
+    float timeStep = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        AddInstruction(new MoveLeftInstruction(Commander.RobotXLessThan, "100"));
+        Commander.AddCommand(this, Command.MoveEast, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveNorth, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveWest, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveSouth, Predicate.Always, "");
     }
 
     public void AddInstruction(Instruction instruction) {
@@ -48,6 +52,14 @@ public class Robot : MonoBehaviour
     void Update()
     {
         print("Current Line: " + currentLine);
+        print(timeStep);
+        print(GameController.instance.timeStep);
+        if (timeStep < GameController.instance.timeStep) {
+            timeStep += Time.deltaTime;
+            return;
+        }
+
+        timeStep = 0;
 
         if (instructions.Count > 0) {
             var instruction = instructions[currentLine];
@@ -68,7 +80,6 @@ public class Robot : MonoBehaviour
         
         GameController.instance.CheckBounds(this);
         direction = Vector3.zero;
-        print("something");
     }
 
     private void MoveDirection(Vector3 direction) {
