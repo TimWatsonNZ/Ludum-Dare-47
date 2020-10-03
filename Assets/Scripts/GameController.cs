@@ -27,6 +27,10 @@ public class GameController : MonoBehaviour
             instance = this;
         }
         InitGrid();
+
+        for(int i = 0;i<robots.Count;i++) {
+            robots[i] = Instantiate(robotPrefab, transform).GetComponent<Robot>();
+        }
     }
 
     void InitGrid()
@@ -46,12 +50,6 @@ public class GameController : MonoBehaviour
                 floor.Add(floorTile);
             }
         }
-
-
-
-
-
-
     }
 
     public Robot SpawnRobot()
@@ -107,6 +105,7 @@ public class GameController : MonoBehaviour
     {
         if (time > timeStep)
         {
+            
             time = 0;
             for (int i = 0; i < robots.Count; i++)
             {
