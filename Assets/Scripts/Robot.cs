@@ -8,20 +8,25 @@ public class Robot : MonoBehaviour
     public Vector3 direction = Vector3.zero, target = Vector3.zero;
     public float maxSpeed;
     float speed;
-    static Vector3 north = new Vector3(0, 1, 0);
-    static Vector3 east = new Vector3(1, 0, 0);
-    static Vector3 south = new Vector3(0, -1, 0);
-    static Vector3 west = new Vector3(-1, 0, 0);
-    static Vector3[] directions = new Vector3[] { north, east, south, west };
+    protected static Vector3 north = new Vector3(0, 1, 0);
+    protected static Vector3 east = new Vector3(1, 0, 0);
+    protected static Vector3 south = new Vector3(0, -1, 0);
+    protected static Vector3 west = new Vector3(-1, 0, 0);
+    protected static Vector3[] directions = new Vector3[] { north, east, south, west };
     
     List<Instruction> instructions = new List<Instruction>();
 
     int currentLine = 0;
+    float timeStep = 0;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
-        AddInstruction(new MoveLeftInstruction(Commander.RobotXLessThan, "100"));
+        Commander.AddCommand(this, Command.MoveEast, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveNorth, Predicate.XLessThan, "1.5");
+        Commander.AddCommand(this, Command.MoveWest, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveEast, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveEast, Predicate.Always, "");
     }
 
     public void AddInstruction(Instruction instruction) {
@@ -45,9 +50,14 @@ public class Robot : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
-        print("Current Line: " + currentLine);
+        if (timeStep < GameController.instance.timeStep) {
+            timeStep += Time.deltaTime;
+            return;
+        }
+
+        timeStep = 0;
 
         if (instructions.Count > 0) {
             var instruction = instructions[currentLine];
@@ -68,7 +78,6 @@ public class Robot : MonoBehaviour
         
         GameController.instance.CheckBounds(this);
         direction = Vector3.zero;
-        print("something");
     }
 
     private void MoveDirection(Vector3 direction) {
@@ -80,4 +89,42 @@ public class Robot : MonoBehaviour
     {
         transform.position = target;
     }
+
+    protected void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("enemy"))
+        {
+            transform.position = Vector3.zero;
+            target = Vector3.zero;
+            print("death");
+        }
+        if (collision.gameObject.CompareTag("wall"))
+        {
+            speed = 0;
+            transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
+            direction = -direction;
+            target = transform.position + direction;
+
+            print("wall");
+        }
+    }
+
+    protected void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("enemy")) {
+            transform.position = Vector3.zero;
+            target = Vector3.zero;
+            print("death");
+        }
+        if (collision.gameObject.CompareTag("wall"))
+        {
+            speed = 0;
+            transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
+            direction = -direction;
+            target = transform.position + direction;
+            
+            print("wall");
+        }
+    }
+
 }

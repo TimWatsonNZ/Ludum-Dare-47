@@ -26,14 +26,51 @@ public class PrintInstruction : Instruction {
   }
 }
 
-public class MoveLeftInstruction : Instruction {
-  public MoveLeftInstruction(Func<Robot, string, bool> predicate, string param) : base(predicate, param)
+public class MoveEastInstruction : Instruction {
+  public MoveEastInstruction(Func<Robot, string, bool> predicate, string param) : base(predicate, param)
   {
   }
 
   public override void Run(Robot robot) {
     if (predicate.Invoke(robot, param)) {
       robot.MoveEast();
+    }
+  }
+}
+
+public class MoveWestInstruction : Instruction {
+  public MoveWestInstruction(Func<Robot, string, bool> predicate, string param) : base(predicate, param)
+  {
+  }
+
+  public override void Run(Robot robot) {
+    if (predicate.Invoke(robot, param)) {
+      robot.MoveWest();
+    }
+  }
+}
+
+public class MoveNorthInstruction : Instruction {
+  public MoveNorthInstruction(Func<Robot, string, bool> predicate, string param) : base(predicate, param)
+  {
+  }
+
+  public override void Run(Robot robot) {
+    if (predicate.Invoke(robot, param)) {
+      robot.MoveNorth();
+    }
+  }
+}
+
+
+public class MoveSouthInstruction : Instruction {
+  public MoveSouthInstruction(Func<Robot, string, bool> predicate, string param) : base(predicate, param)
+  {
+  }
+
+  public override void Run(Robot robot) {
+    if (predicate.Invoke(robot, param)) {
+      robot.MoveSouth();
     }
   }
 }
