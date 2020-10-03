@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public GameObject robotPrefab, floorPrefab, wallPrefab, resourcePrefab, enemyPrefab;
 
     public Vector2 gridSize = new Vector2(0, 0);
+    public int wallCount = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +48,10 @@ public class GameController : MonoBehaviour
             }
         }
 
-
+        for (int i = 0; i < wallCount; i++) {
+            Wall wall = Instantiate(wallPrefab).GetComponent<Wall>();
+            wall.transform.position = RandomPosition();
+        }
 
 
 
@@ -62,7 +66,12 @@ public class GameController : MonoBehaviour
     }
 
     public Vector3 RandomPosition() {
-        return new Vector3((int)(gridSize.x * Random.value - gridSize.x / 2), (int)(gridSize.y * Random.value - gridSize.y / 2), 0);
+        Vector2 pos = Vector2.zero;
+        while (pos.Equals(Vector2.zero))
+        {
+            pos = new Vector3((int)(gridSize.x * Random.value - gridSize.x / 2), (int)(gridSize.y * Random.value - gridSize.y / 2), 0);
+        }
+        return pos;
     }
 
     public void CheckBounds(Robot robot)
