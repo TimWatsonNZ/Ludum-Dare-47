@@ -23,9 +23,10 @@ public class Robot : MonoBehaviour
     void Start()
     {
         Commander.AddCommand(this, Command.MoveEast, Predicate.Always, "");
-        Commander.AddCommand(this, Command.MoveNorth, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveNorth, Predicate.XLessThan, "1.5");
         Commander.AddCommand(this, Command.MoveWest, Predicate.Always, "");
-        Commander.AddCommand(this, Command.MoveSouth, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveEast, Predicate.Always, "");
+        Commander.AddCommand(this, Command.MoveEast, Predicate.Always, "");
     }
 
     public void AddInstruction(Instruction instruction) {
@@ -51,9 +52,6 @@ public class Robot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print("Current Line: " + currentLine);
-        print(timeStep);
-        print(GameController.instance.timeStep);
         if (timeStep < GameController.instance.timeStep) {
             timeStep += Time.deltaTime;
             return;

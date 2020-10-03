@@ -2,10 +2,10 @@ using System;
 
 public static class Commander {
   public static Func<Robot, string, bool> Always = (Robot robot, string param) => true;
-  public static Func<Robot, string, bool> RobotXLessThan = (Robot robot, string param) => robot.transform.position.x < Int32.Parse(param);
-  public static Func<Robot, string, bool> RobotXMoreThan = (Robot robot, string param) => robot.transform.position.x > Int32.Parse(param);
-  public static Func<Robot, string, bool> RobotYLessThan = (Robot robot, string param) => robot.transform.position.y < Int32.Parse(param);
-  public static Func<Robot, string, bool> RobotYMoreThan = (Robot robot, string param) => robot.transform.position.y > Int32.Parse(param);
+  public static Func<Robot, string, bool> RobotXLessThan = (Robot robot, string param) => robot.transform.position.x < float.Parse(param);
+  public static Func<Robot, string, bool> RobotXMoreThan = (Robot robot, string param) => robot.transform.position.x > float.Parse(param);
+  public static Func<Robot, string, bool> RobotYLessThan = (Robot robot, string param) => robot.transform.position.y < float.Parse(param);
+  public static Func<Robot, string, bool> RobotYMoreThan = (Robot robot, string param) => robot.transform.position.y > float.Parse(param);
 
   public static void AddCommand(Robot robot, Command command, Predicate predicateEnum, string param) {
 
