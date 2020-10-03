@@ -28,6 +28,10 @@ public class GameController : MonoBehaviour
             instance = this;
         }
         InitGrid();
+
+        for(int i = 0;i<robots.Count;i++) {
+            robots[i] = Instantiate(robotPrefab, transform).GetComponent<Robot>();
+        }
     }
 
     void InitGrid()
@@ -173,12 +177,51 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void CheckBounds(Enemy e)
+    {
+        Vector2 pos = e.transform.position;
+        Vector2 newPos = pos;
+        Vector2 target = e.target;
+        Vector2 newTarget = target;
+        bool outOfBounds = false;
+
+        if (target.x > gridSize.x / 2 && pos.x > gridSize.x / 2)
+        {
+            newPos.x = -gridSize.x / 2 - 1;
+            newTarget.x = -gridSize.x / 2;
+            outOfBounds = true;
+        }
+        if (target.x < -gridSize.x / 2 && pos.x < -gridSize.x / 2)
+        {
+            newPos.x = gridSize.x / 2 + 1;
+            newTarget.x = gridSize.x / 2;
+            outOfBounds = true;
+        }
+        if (target.y > gridSize.y / 2 && pos.y > gridSize.y / 2)
+        {
+            newPos.y = -gridSize.y / 2 - 1;
+            newTarget.y = -gridSize.y / 2;
+            outOfBounds = true;
+        }
+        if (target.y < -gridSize.y / 2 && pos.y < -gridSize.y / 2)
+        {
+            newPos.y = gridSize.y / 2 + 1;
+            newTarget.y = gridSize.y / 2;
+            outOfBounds = true;
+        }
+        if (outOfBounds)
+        {
+            e.target = newTarget;
+            e.transform.position = newPos;
+        }
+    }
 
     // Update is called once per frame
     protected void Update()
     {
         if (time > timeStep)
         {
+            
             time = 0;
             for (int i = 0; i < robots.Count; i++)
             {
