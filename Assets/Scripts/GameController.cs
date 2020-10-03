@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public GameObject robotPrefab, floorPrefab, wallPrefab, resourcePrefab, enemyPrefab;
 
     public Vector2 gridSize = new Vector2(0, 0);
+    public int wallCount = 3, resourceCount = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +51,14 @@ public class GameController : MonoBehaviour
                 floor.Add(floorTile);
             }
         }
+
+        for (int i = 0; i < wallCount; i++)
+        {
+            Wall wall = Instantiate(wallPrefab).GetComponent<Wall>();
+            wall.transform.position = RandomPosition();
+        }
+
+        SpawnResource();
     }
 
     public Robot SpawnRobot()
@@ -58,6 +67,40 @@ public class GameController : MonoBehaviour
         robots.Add(robot);
         return robot;
     }
+
+    public void SpawnResource()
+    {
+        int tries = 0;
+        for (int i = 0; i < wallCount; i++)
+        {
+            Resource resource = Instantiate(resourcePrefab).GetComponent<Resource>();
+            Vector3 pos = RandomPosition();
+            for (int j = 0; j < walls.Count; j++)
+            {
+                while (pos.Equals(walls[j]) || tries < 100)
+                {
+                    pos = RandomPosition();
+                    tries++;
+                }
+                if (tries >= 100)
+                {
+                    return;
+                }
+            }
+            resource.transform.position = pos;
+        }
+    }
+
+    public Vector3 RandomPosition()
+    {
+        Vector2 pos = Vector2.zero;
+        while (pos.Equals(Vector2.zero))
+        {
+            pos = new Vector3((int)(gridSize.x * Random.value - gridSize.x / 2), (int)(gridSize.y * Random.value - gridSize.y / 2), 0);
+        }
+        return pos;
+    }
+
 
     public void CheckBounds(Robot robot)
     {
@@ -98,7 +141,44 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void CheckBounds(Enemy e)
+    {
+        Vector2 pos = e.transform.position;
+        Vector2 newPos = pos;
+        Vector2 target = e.target;
+        Vector2 newTarget = target;
+        bool outOfBounds = false;
 
+        if (target.x > gridSize.x / 2 && pos.x > gridSize.x / 2)
+        {
+            newPos.x = -gridSize.x / 2 - 1;
+            newTarget.x = -gridSize.x / 2;
+            outOfBounds = true;
+        }
+        if (target.x < -gridSize.x / 2 && pos.x < -gridSize.x / 2)
+        {
+            newPos.x = gridSize.x / 2 + 1;
+            newTarget.x = gridSize.x / 2;
+            outOfBounds = true;
+        }
+        if (target.y > gridSize.y / 2 && pos.y > gridSize.y / 2)
+        {
+            newPos.y = -gridSize.y / 2 - 1;
+            newTarget.y = -gridSize.y / 2;
+            outOfBounds = true;
+        }
+        if (target.y < -gridSize.y / 2 && pos.y < -gridSize.y / 2)
+        {
+            newPos.y = gridSize.y / 2 + 1;
+            newTarget.y = gridSize.y / 2;
+            outOfBounds = true;
+        }
+        if (outOfBounds)
+        {
+            e.target = newTarget;
+            e.transform.position = newPos;
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -111,6 +191,11 @@ public class GameController : MonoBehaviour
             {
                 Robot robot = robots[i];
                 robot.RunProgram();
+            }
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                Enemy enemy = enemies[i];
+                enemy.Move();
             }
         }
         time += Time.deltaTime;
